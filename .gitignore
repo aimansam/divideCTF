@@ -1,0 +1,45 @@
+# Logs
+logs/
+
+# Environment
+.env
+.env.local
+*.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+.docker/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Node
+node_modules/
+
+# SQLite
+*.db
+*.sqlite
+*.sqlite3
+!challenges/*/schema_*.sql
+
+# Secrets
+*.pem
+*.key
+*.crt

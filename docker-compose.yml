@@ -1,0 +1,69 @@
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "7000:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./index.html:/usr/share/nginx/html/index.html:ro
+    depends_on:
+      - welcome
+      - cybercorp1
+      - cybercorp2
+      - bluebox
+      - lazydev1
+      - santa
+      - recipe
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel run --url http://nginx:80
+    environment:
+      - CLOUDFLARE_TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    profiles:
+      - tunnel
+
+  welcome:
+    build: ./challenges/01-welcome
+    ports:
+      - "7001:8080"
+
+  cybercorp1:
+    build: ./challenges/02-cybercorp1
+    ports:
+      - "7002:8080"
+    environment:
+      - FLAG=divide{P455W0rD_134K3D_1N_P141N73X7}
+
+  cybercorp2:
+    build: ./challenges/03-cybercorp2
+    ports:
+      - "7003:8080"
+    environment:
+      - FLAG=divide{CY83r_C0rP_607_8r34CH_4641N}
+
+  bluebox:
+    build: ./challenges/04-bluebox
+    ports:
+      - "7004:5000"
+
+  lazydev1:
+    build: ./challenges/05-lazydev1
+    ports:
+      - "7005:8080"
+    environment:
+      - FLAG=divide{jwt_fl4g_rand0m_2026}
+
+  santa:
+    build: ./challenges/06-santa
+    ports:
+      - "7006:80"
+    environment:
+      - SANTA_FLAG=FLAG{s4nt4_r4nd0m_p4rty_2026}
+
+  recipe:
+    build: ./challenges/07-recipe
+    ports:
+      - "7007:8080"
+    environment:
+      - FLAG=divide{cookmesometh1ngpleas3_182heb4j5n2}

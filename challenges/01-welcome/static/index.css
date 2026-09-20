@@ -1,0 +1,49 @@
+html{
+    background-color: black;
+    color: gainsboro;
+}
+body{
+    font-family: "Audiowide", sans-serif;
+    margin: 0;
+    padding: 0;
+}
+h1{
+    letter-spacing: 5px;
+}
+
+h2{
+    letter-spacing: 3px;
+}
+
+p{
+    letter-spacing: 2px;
+}
+
+.container{
+    content-align: center;
+    text-align: center;
+    height: auto;
+}
+
+img{
+    border-radius: 15px;
+    width: 400px;
+    height: auto;
+}
+
+a{
+    text-decoration: none;
+    color: gainsboro;
+}
+.startButton{
+    display: inline-block;
+    background-color: black;
+    border: 2px solid gainsboro;
+    border-radius: 10px;
+    color: gainsboro;
+    font-family: "Audiowide", sans-serif;
+    font-size: 20px;
+    padding: 10px;
+    transition-duration: 0.4s;
+    margin-top: 10px;
+}

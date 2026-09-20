@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CyberCorp | Admin Dashboard</title>
+  <style>
+    :root{
+      --bg0:#000; --bg1:#0b1220; --text:#e5e7eb; --muted:#cbd5f5; --muted2:#94a3b8;
+      --cyan:#22d3ee; --cyan2:#67e8f9; --line:rgba(255,255,255,.10);
+      --card:rgba(255,255,255,.06); --card2:rgba(255,255,255,.09);
+      --danger:#f87171; --ok:#34d399; --warn:#fbbf24;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(1200px 800px at 50% 0%, rgba(34,211,238,0.18), transparent 55%),
+        radial-gradient(900px 700px at 15% 15%, rgba(139,92,246,0.14), transparent 55%),
+        radial-gradient(900px 700px at 85% 25%, rgba(59,130,246,0.10), transparent 55%),
+        radial-gradient(circle at top, var(--bg1), var(--bg0));
+      color:var(--text);
+      line-height:1.6;
+      min-height:100vh;
+    }
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1200px;margin:0 auto;padding:0 1.25rem}
+
+    /* Topbar */
+    .topbar{
+      position:sticky;top:0;z-index:50;
+      backdrop-filter: blur(12px);
+      background: rgba(2, 6, 23, 0.60);
+      border-bottom:1px solid var(--line);
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 0}
+    .brand{display:flex;align-items:center;gap:.75rem;font-weight:900;letter-spacing:.3px}
+    .logo-svg{flex:0 0 auto}
+    .navlinks{display:none;gap:1.25rem;align-items:center}
+    .navlinks a{color:rgba(229,231,235,.86);font-weight:650;font-size:.95rem;padding:.5rem .25rem;border-bottom:2px solid transparent;transition:all .2s ease}
+    .navlinks a:hover{color:var(--cyan2);border-bottom-color:rgba(103,232,249,.55)}
+
+    .navcta{display:flex;gap:.6rem;align-items:center}
+    .btn{
+      display:inline-block;padding:.72rem 1.0rem;border-radius:14px;
+      font-weight:900;letter-spacing:.2px;white-space:nowrap;
+      transition: transform .15s ease, border-color .2s ease;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,0.04);
+      color: rgba(229,231,235,0.92);
+    }
+    .btn:hover{transform:translateY(-1px);border-color:rgba(103,232,249,.45)}
+    .btn.primary{border:0;color:#020617;background:linear-gradient(135deg,var(--cyan),rgba(139,92,246,0.75));box-shadow:0 18px 50px rgba(34,211,238,0.14)}
+
+    /* Page header */
+    .page{
+      padding: 2.25rem 0 3.25rem;
+      position: relative;
+    }
+    .page::before{
+      content:"";
+      position:absolute;
+      inset:-140px -60px auto -60px;
+      height:520px;
+      background:
+        radial-gradient(closest-side at 30% 30%, rgba(34,211,238,0.18), transparent 70%),
+        radial-gradient(closest-side at 75% 20%, rgba(139,92,246,0.14), transparent 70%);
+      filter: blur(10px);
+      pointer-events:none;
+      opacity:.9;
+    }
+    .header{
+      position:relative;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:1rem;
+      flex-wrap:wrap;
+      margin-bottom: 1.25rem;
+    }
+    .header h1{margin:0;font-size:1.9rem;letter-spacing:-0.02em;line-height:1.15}
+    .sub{margin:.35rem 0 0;color:rgba(203,213,245,0.92);max-width:70ch}
+
+    /* Cards + layout */
+    .grid{
+      position:relative;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 22px;
+      padding: 1.1rem;
+      box-shadow: 0 18px 55px rgba(0,0,0,0.35);
+      overflow:hidden;
+      position:relative;
+    }
+    .card::before{
+      content:"";
+      position:absolute;inset:-1px;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(34,211,238,0.18), transparent 55%),
+        radial-gradient(circle at 80% 10%, rgba(139,92,246,0.12), transparent 55%);
+      opacity:.8;pointer-events:none;
+    }
+    .inner{
+      position:relative;
+      background: rgba(2, 6, 23, 0.55);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 18px;
+      padding: 1rem;
+    }
+    .card-title{
+      display:flex;align-items:center;justify-content:space-between;gap:1rem;
+      margin-bottom:.85rem;
+      padding-bottom:.75rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .card-title strong{font-size:1rem;letter-spacing:-0.01em}
+    .card-title small{color:rgba(148,163,184,0.95);font-weight:750}
+
+    /* KPI */
+    .kpis{display:grid;grid-template-columns: repeat(2,minmax(0,1fr));gap:.8rem}
+    .kpi{
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: .85rem .9rem;
+    }
+    .kpi .label{color:rgba(148,163,184,0.95);font-weight:800;font-size:.86rem}
+    .kpi .value{font-size:1.25rem;font-weight:950;margin-top:.25rem;letter-spacing:-0.01em}
+    .pill{
+      display:inline-flex;align-items:center;gap:.45rem;
+      padding:.35rem .6rem;border-radius:999px;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: rgba(203,213,245,0.92);
+      font-weight:850;font-size:.82rem;
+      white-space:nowrap;
+    }
+    .dot{width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.25)}
+    .dot.ok{background:rgba(52,211,153,.95)}
+    .dot.warn{background:rgba(251,191,36,.95)}
+    .dot.bad{background:rgba(248,113,113,.95)}
+
+    /* Toolbar */
+    .toolbar{
+      display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;justify-content:space-between;
+      margin-bottom:.75rem;
+    }
+    .search{
+      display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;
+      width:100%;
+    }
+    .input{
+      flex:1 1 260px;
+      min-width: 220px;
+    }
+    .input input, .input select{
+      width:100%;
+      padding:.78rem .85rem;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      outline:none;
+      transition: box-shadow .2s ease, border-color .2s ease;
+    }
+    .input input:focus, .input select:focus{
+      border-color: rgba(103,232,249,0.65);
+      box-shadow: 0 0 0 4px rgba(34,211,238,0.10);
+    }
+    .actions{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+
+    /* Table */
+    .table-wrap{
+      overflow:auto;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+    }
+    table{width:100%;border-collapse:collapse;min-width:860px}
+    thead th{
+      position: sticky;
+      top: 0;
+      background: rgba(2, 6, 23, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+      color: rgba(203,213,245,0.92);
+      text-align:left;
+      font-size:.84rem;
+      letter-spacing:.02em;
+      text-transform: uppercase;
+      padding: .75rem .8rem;
+      font-weight: 900;
+      z-index: 1;
+    }
+    tbody td{
+      padding: .75rem .8rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      color: rgba(229,231,235,0.92);
+      font-weight: 650;
+      font-size: .93rem;
+      vertical-align: top;
+    }
+    tbody tr:hover td{background: rgba(103,232,249,0.04)}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: .9rem}
+    .muted{color: rgba(148,163,184,0.95); font-weight: 700}
+
+    .tag{
+      display:inline-flex;align-items:center;gap:.45rem;
+      padding:.28rem .55rem;border-radius:999px;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      font-weight: 900; font-size: .82rem;
+    }
+    .tag.ok{border-color: rgba(52,211,153,0.30); background: rgba(52,211,153,0.10)}
+    .tag.warn{border-color: rgba(251,191,36,0.30); background: rgba(251,191,36,0.10)}
+    .tag.bad{border-color: rgba(248,113,113,0.30); background: rgba(248,113,113,0.10)}
+
+    .rowbtn{
+      padding:.55rem .75rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: rgba(229,231,235,0.92);
+      font-weight: 900;
+      cursor: pointer;
+      text-decoration:none;
+      display:inline-block;
+      transition: transform .15s ease, border-color .2s ease;
+    }
+    .rowbtn:hover{transform: translateY(-1px); border-color: rgba(103,232,249,0.45)}
+
+    .flash{
+      margin: 0 0 1rem;
+      border: 1px solid rgba(103,232,249,0.35);
+      background: rgba(34,211,238,0.10);
+      color: rgba(229,231,235,0.95);
+      border-radius: 14px;
+      padding: 0.75rem 0.9rem;
+      font-weight: 800;
+      font-size: 0.92rem;
+      position: relative;
+    }
+
+    footer{
+      text-align:center;
+      padding: 2.25rem 1.25rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted2);
+      font-size: .9rem;
+      margin-top: 2rem;
+    }
+
+    @media (min-width: 920px){
+      .navlinks{display:flex}
+      .grid{grid-template-columns: 0.8fr 1.2fr}
+      .kpis{grid-template-columns: repeat(4,minmax(0,1fr))}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="container">
+      <nav class="nav" aria-label="Primary">
+        <a class="brand" href="/" aria-label="CyberCorp home">
+          <!-- Option B logo -->
+          <svg width="40" height="40" viewBox="0 0 64 64" aria-hidden="true" class="logo-svg">
+            <defs>
+              <linearGradient id="ccB" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#22d3ee"/>
+                <stop offset="1" stop-color="#8b5cf6"/>
+              </linearGradient>
+            </defs>
+            <rect x="6" y="6" width="52" height="52" rx="18" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)"/>
+            <circle cx="32" cy="32" r="18" fill="none" stroke="url(#ccB)" stroke-width="4" opacity="0.9"/>
+            <path d="M38 22c-2-2-4-3-7-3-7 0-12 6-12 13s5 13 12 13c3 0 5-1 7-3"
+                  fill="none" stroke="rgba(229,231,235,0.92)" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="47" cy="32" r="2.2" fill="#67e8f9"/>
+          </svg>
+          <span>CyberCorp Admin</span>
+        </a>
+
+        <div class="navlinks">
+          <a href="#">Overview</a>
+          <a href="#">Users</a>
+          <a href="#">Logs</a>
+          <a href="#">Settings</a>
+        </div>
+
+        <div class="navcta">
+          <a class="btn" href="/" title="Back to site">Public Site</a>
+          <a class="btn primary" href="/logout" title="Sign out">Logout</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <main class="page">
+    <div class="container">
+
+      <div class="header">
+        <div>
+          <h1>Admin Dashboard</h1>
+          <p class="sub">Manage employee accounts and review activity from the SQLite database.</p>
+        </div>
+        <span class="pill"><span class="dot ok" aria-hidden="true"></span> DB: {{ 'cybercorp.db' }}</span>
+      </div>
+
+      {# Optional flash messages #}
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="flash">{{ messages[0] }}</div>
+        {% endif %}
+      {% endwith %}
+
+      {% if error %}
+        <div class="flash">{{ error }}</div>
+      {% endif %}
+
+      <div class="card" style="margin-bottom:1rem;">
+        <div class="inner">
+          <div class="card-title">
+            <strong>System KPIs</strong>
+            <small>Live snapshot</small>
+          </div>
+
+          <div class="kpis">
+            <div class="kpi">
+              <div class="label">Total Users</div>
+              <div class="value">{{ stats.all_users or 0 }}</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Active Users</div>
+              <div class="value">{{ stats.active_users or 0 }}</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Failed Logins (24h)</div>
+              <div class="value">{{ stats.failed_logins_24h or 0 }}</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Events</div>
+              <div class="value">{{ stats.total_event or 0 }}</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="grid">
+
+        <!-- LEFT: Filters / quick actions -->
+        <section class="card">
+          <div class="inner">
+            <div class="card-title">
+              <strong>Filters</strong>
+              <small>Query SQLite</small>
+            </div>
+
+            <form method="GET" action="/admin" class="search" aria-label="Admin search">
+              <div class="input">
+                <label class="muted" for="username">Search</label>
+                <input id="username" name="username" type="text" value="{{ request.args.get('username','') }}" placeholder="username" />
+              </div>
+
+              <div class="input">
+                <label class="muted" for="role">Role</label>
+                <select id="role" name="role">
+                  {% set r = request.args.get('role','') %}
+                  <option value="" {% if r=='' %}selected{% endif %}>All</option>
+                  <option value="admin" {% if r=='admin' %}selected{% endif %}>Admin</option>
+                  <option value="employee" {% if r=='employee' %}selected{% endif %}>Employee</option>
+                  <option value="disabled" {% if r=='disabled' %}selected{% endif %}>Disabled</option>
+                </select>
+              </div>
+
+              <div class="input">
+                <label class="muted" for="status">Status</label>
+                {% set s = request.args.get('status','') %}
+                <select id="status" name="status">
+                  <option value="" {% if s=='' %}selected{% endif %}>All</option>
+                  <option value="active" {% if s=='active' %}selected{% endif %}>Active</option>
+                  <option value="locked" {% if s=='locked' %}selected{% endif %}>Locked</option>
+                </select>
+              </div>
+
+              <div class="actions">
+                <button class="btn primary" type="submit">Apply</button>
+                <a class="btn" href="/admin">Reset</a>
+              </div>
+            </form>
+
+            <div style="margin-top:1rem; display:flex; gap:.6rem; flex-wrap:wrap;">
+              <a class="btn" href="#">+ New User</a>
+              <a class="btn" href="#">Export CSV</a>
+              <a class="btn" href="#">View Logs</a>
+            </div>
+
+            <p style="margin:1rem 0 0; color:rgba(148,163,184,0.95); font-weight:750; font-size:.9rem;">
+              Tip: Hook these filters to a SQLite query using <span class="mono">username</span>, <span class="mono">role</span>, and <span class="mono">status</span>.
+            </p>
+          </div>
+        </section>
+
+        <!-- RIGHT: Users table from SQLite -->
+        <section class="card">
+          <div class="inner">
+            <div class="card-title">
+              <strong>Users</strong>
+              <small>{{ users|length if users is defined else 0 }} results</small>
+            </div>
+
+            <div class="table-wrap" aria-label="Users table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Last Login</th>
+                    <th class="muted">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if users and users|length > 0 %}
+                    {% for u in users %}
+                      <tr>
+                        <td class="mono">{{ u.id }}</td>
+                        <td>
+                          <div style="font-weight:900;">{{ u.username }}</div>
+                          {% if u.email %}
+                            <div class="muted">{{ u.email }}</div>
+                          {% endif %}
+                        </td>
+                        <td>
+                          {% set role = (u.role or 'employee') %}
+                          <span class="tag {% if role=='admin' %}ok{% else %}warn{% endif %}">
+                            <span class="dot {% if role=='admin' %}ok{% else %}warn{% endif %}" aria-hidden="true"></span>
+                            {{ role|capitalize }}
+                          </span>
+                        </td>
+                        <td>
+                          {% set st = (u.status or 'active') %}
+                          <span class="tag {% if st=='active' %}ok{% elif st=='locked' %}bad{% else %}warn{% endif %}">
+                            <span class="dot {% if st=='active' %}ok{% elif st=='locked' %}bad{% else %}warn{% endif %}" aria-hidden="true"></span>
+                            {{ st|capitalize }}
+                          </span>
+                        </td>
+                        <td class="muted">{{ u.last_login or '—' }}</td>
+                        <td>
+                          <a class="rowbtn" href="#">View</a>
+                          <a class="rowbtn" href="#">Edit</a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr>
+                      <td colspan="6" class="muted">No users found. Try adjusting filters.</td>
+                    </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+              <div class="pagination-footer" style="padding: 1rem; display: flex; justify-content: space-between;">
+              </div>
+            </div>
+
+            <!-- Pagination (optional) -->
+            <div style="display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-top:0.9rem;">
+              <div class="muted">
+                Page {{ page or 1 }}{% if total_pages %} of {{ total_pages }}{% endif %}
+              </div>
+              <div style="display:flex; gap:.6rem; flex-wrap:wrap;">
+                {% if prev_url %}<a class="btn" href="{{ prev_url }}">← Prev</a>{% endif %}
+                {% if next_url %}<a class="btn" href="{{ next_url }}">Next →</a>{% endif %}
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Recent events table (optional) -->
+      <section class="card" style="margin-top:1rem;">
+        <div class="inner">
+          <div class="card-title">
+            <strong>Recent Activity</strong>
+            <small>From SQLite events/logs</small>
+          </div>
+
+          <div class="table-wrap" aria-label="Recent activity table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>User</th>
+                  <th>Event</th>
+                  <th>IP</th>
+                  <th>Result</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if events and events|length > 0 %}
+                  {% for e in events %}
+                    <tr>
+                      <td class="muted">{{ e.created_at }}</td>
+                      <td class="mono">{{ e.username or '—' }}</td>
+                      <td>{{ e.event_type }}</td>
+                      <td class="mono muted">{{ e.ip or '—' }}</td>
+                      <td>
+                        {% set r = (e.result or 'ok') %}
+                        <span class="tag {% if r=='ok' %}ok{% elif r=='warn' %}warn{% else %}bad{% endif %}">
+                          <span class="dot {% if r=='ok' %}ok{% elif r=='warn' %}warn{% else %}bad{% endif %}" aria-hidden="true"></span>
+                          {{ r|upper }}
+                        </span>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                {% else %}
+                  <tr><td colspan="5" class="muted">No events to show.</td></tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    © 2026 CyberCorp. All rights reserved.
+  </footer>
+</body>
+</html>

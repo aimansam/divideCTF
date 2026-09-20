@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CyberCorp | Employee Login</title>
+  <style>
+    :root {
+      --bg0: #000000;
+      --bg1: #0b1220;
+      --text: #e5e7eb;
+      --muted: #cbd5f5;
+      --muted2: #94a3b8;
+      --cyan: #22d3ee;
+      --cyan2: #67e8f9;
+      --line: rgba(255, 255, 255, 0.1);
+      --card: rgba(255, 255, 255, 0.06);
+      --card2: rgba(255, 255, 255, 0.09);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(1200px 800px at 50% 0%, rgba(34,211,238,0.18), transparent 55%),
+        radial-gradient(900px 700px at 15% 15%, rgba(139,92,246,0.14), transparent 55%),
+        radial-gradient(900px 700px at 85% 25%, rgba(59,130,246,0.10), transparent 55%),
+        radial-gradient(circle at top, var(--bg1), var(--bg0));
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    a { color: inherit; }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* Top nav (same vibe as landing page) */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background: rgba(2, 6, 23, 0.55);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+
+    .brand span {
+      font-weight: 800;
+      letter-spacing: 0.4px;
+    }
+
+    .logo-svg { flex: 0 0 auto; }
+
+    .navlinks {
+      display: none;
+      gap: 1.25rem;
+      align-items: center;
+    }
+
+    .navlinks a {
+      text-decoration: none;
+      color: rgba(229,231,235,0.86);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.25rem;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .navlinks a:hover {
+      color: var(--cyan2);
+      border-bottom-color: rgba(103,232,249,0.55);
+    }
+
+    .navcta {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.05rem;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+      will-change: transform;
+      white-space: nowrap;
+    }
+
+    .btn:active { transform: translateY(1px) scale(0.99); }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--cyan), rgba(139,92,246,0.75));
+      color: #020617;
+      box-shadow: 0 18px 50px rgba(34,211,238,0.14);
+    }
+
+    .btn.primary:hover { transform: translateY(-1px); }
+
+    .btn.ghost {
+      border: 1px solid rgba(34,211,238,0.55);
+      color: rgba(34,211,238,0.95);
+      background: rgba(2, 6, 23, 0.35);
+    }
+
+    .btn.ghost:hover {
+      border-color: rgba(103,232,249,0.9);
+      color: rgba(103,232,249,0.95);
+      transform: translateY(-1px);
+    }
+
+    /* Login layout */
+    .auth {
+      position: relative;
+      padding: 3.75rem 0 4.5rem;
+    }
+
+    .auth::before {
+      content: "";
+      position: absolute;
+      inset: -120px -60px auto -60px;
+      height: 520px;
+      background:
+        radial-gradient(closest-side at 30% 30%, rgba(34,211,238,0.22), transparent 70%),
+        radial-gradient(closest-side at 70% 20%, rgba(139,92,246,0.18), transparent 70%),
+        radial-gradient(closest-side at 55% 60%, rgba(59,130,246,0.12), transparent 70%);
+      filter: blur(10px);
+      pointer-events: none;
+    }
+
+    .auth-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      align-items: start;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .auth-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      padding: 1.2rem;
+      box-shadow: 0 22px 70px rgba(0,0,0,0.45);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(34,211,238,0.22), transparent 55%),
+        radial-gradient(circle at 80% 10%, rgba(139,92,246,0.18), transparent 55%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .auth-inner {
+      position: relative;
+      background: rgba(2, 6, 23, 0.55);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 18px;
+      padding: 1.25rem;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(34,211,238,0.10);
+      border: 1px solid rgba(34,211,238,0.25);
+      color: rgba(103,232,249,0.92);
+      font-weight: 800;
+      font-size: 0.85rem;
+      width: fit-content;
+      margin-bottom: 0.9rem;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--cyan2);
+      box-shadow: 0 0 18px rgba(103,232,249,0.75);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.9rem;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .sub {
+      margin: 0.55rem 0 1.25rem;
+      color: rgba(203,213,245,0.92);
+      max-width: 60ch;
+    }
+
+    .flash {
+      margin: 0 0 1rem;
+      border: 1px solid rgba(103,232,249,0.35);
+      background: rgba(34,211,238,0.10);
+      color: rgba(229,231,235,0.95);
+      border-radius: 14px;
+      padding: 0.75rem 0.9rem;
+      font-weight: 750;
+      font-size: 0.92rem;
+    }
+
+    form { display: grid; gap: 0.95rem; }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: rgba(229,231,235,0.92);
+      margin-bottom: 0.4rem;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 0.9rem 0.95rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      outline: none;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .field input::placeholder { color: rgba(148,163,184,0.9); }
+
+    .field input:focus {
+      border-color: rgba(103,232,249,0.65);
+      box-shadow: 0 0 0 4px rgba(34,211,238,0.10);
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 0.1rem;
+    }
+
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: rgba(203,213,245,0.92);
+      font-weight: 700;
+      font-size: 0.92rem;
+      user-select: none;
+    }
+
+    .check input { accent-color: var(--cyan2); }
+
+    .link {
+      color: rgba(103,232,249,0.95);
+      font-weight: 800;
+      font-size: 0.92rem;
+      text-decoration: none;
+    }
+
+    .link:hover { text-decoration: underline; }
+
+    .submit {
+      margin-top: 0.25rem;
+      padding: 0.95rem 1.05rem;
+      border-radius: 16px;
+      border: 0;
+      font-weight: 900;
+      cursor: pointer;
+      color: #020617;
+      background: linear-gradient(135deg, var(--cyan), rgba(139,92,246,0.75));
+      box-shadow: 0 18px 50px rgba(34,211,238,0.14);
+      transition: transform 0.15s ease;
+    }
+
+    .submit:hover { transform: translateY(-1px); }
+
+    .fine {
+      margin: 1rem 0 0;
+      color: rgba(148,163,184,0.95);
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .side {
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      background: rgba(255,255,255,0.03);
+      padding: 1.2rem;
+    }
+
+    .side h2 {
+      margin: 0 0 0.65rem;
+      font-size: 1.15rem;
+      letter-spacing: -0.01em;
+    }
+
+    .side p {
+      margin: 0;
+      color: rgba(203,213,245,0.92);
+      font-size: 0.95rem;
+    }
+
+    .bullets {
+      margin: 1rem 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0.7rem;
+      color: rgba(203,213,245,0.92);
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+
+    .bullets li {
+      display: flex;
+      gap: 0.6rem;
+      align-items: flex-start;
+    }
+
+    .tick {
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      background: rgba(34,211,238,0.12);
+      border: 1px solid rgba(34,211,238,0.25);
+      display: inline-grid;
+      place-items: center;
+      color: rgba(103,232,249,0.95);
+      font-weight: 900;
+      line-height: 1;
+      flex: 0 0 auto;
+      margin-top: 0.15rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.25rem 1.25rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted2);
+      font-size: 0.9rem;
+      margin-top: 2.5rem;
+    }
+
+    @media (min-width: 860px) {
+      .navlinks { display: flex; }
+      .auth-grid { grid-template-columns: 1.1fr 0.9fr; gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="container">
+      <nav class="nav" aria-label="Primary">
+        <a class="brand" href="/" aria-label="CyberCorp home">
+          <!-- Option B logo -->
+          <svg width="40" height="40" viewBox="0 0 64 64" aria-hidden="true" class="logo-svg">
+            <defs>
+              <linearGradient id="ccB" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#22d3ee"/>
+                <stop offset="1" stop-color="#8b5cf6"/>
+              </linearGradient>
+            </defs>
+            <rect x="6" y="6" width="52" height="52" rx="18" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)"/>
+            <circle cx="32" cy="32" r="18" fill="none" stroke="url(#ccB)" stroke-width="4" opacity="0.9"/>
+            <path d="M38 22c-2-2-4-3-7-3-7 0-12 6-12 13s5 13 12 13c3 0 5-1 7-3"
+                  fill="none" stroke="rgba(229,231,235,0.92)" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="47" cy="32" r="2.2" fill="#67e8f9"/>
+          </svg>
+          <span>CyberCorp</span>
+        </a>
+
+        <div class="navlinks">
+          <a href="/#features">Features</a>
+          <a href="/#solutions">Solutions</a>
+          <a href="/#pricing">Pricing</a>
+          <a href="/#team">Team</a>
+        </div>
+
+        <div class="navcta">
+          <a class="btn ghost" href="/login" aria-current="page">Employee Login v2.0</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <main class="auth">
+    <div class="container">
+      <div class="auth-grid">
+
+        <div class="auth-card">
+          <div class="auth-inner">
+            <div class="eyebrow"><span class="dot" aria-hidden="true"></span> Employee Portal</div>
+            <h1>Sign in to CyberCorp</h1>
+            <p class="sub">Use your employee username and password to access internal tools.</p>
+
+            {# Optional flash message area (Flask) #}
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div class="flash">{{ messages[0] }}</div>
+              {% endif %}
+            {% endwith %}
+
+            {% if error %}
+                <div class="flash">{{ error }}</div>
+            {% endif %}
+
+
+            <form method="POST" action="/login">
+              <div class="field">
+                <label for="username">Username</label>
+                <input id="username" name="username" type="text" autocomplete="username" placeholder="e.g., John" required />
+              </div>
+
+              <div class="field">
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••••" required />
+              </div>
+
+              <div class="row">
+                <label class="check">
+                  <input type="checkbox" name="remember" />
+                  Remember me
+                </label>
+                <a class="link" href="#">Forgot password?</a>
+              </div>
+
+              <button class="submit" type="submit">Sign In</button>
+
+              <p class="fine">This is a restricted system. Unauthorized access is prohibited and may be monitored.</p>
+            </form>
+          </div>
+        </div>
+
+        <aside class="side" aria-label="Security notes">
+          <h2>Security Notice</h2>
+          <p>For your protection, CyberCorp enforces modern security controls on employee accounts.</p>
+          <ul class="bullets">
+            <li><span class="tick">✓</span> Sessions may require re-authentication</li>
+            <li><span class="tick">✓</span> Use a strong password + avoid sharing credentials</li>
+            <li><span class="tick">✓</span> Report suspicious activity to Security Ops</li>
+          </ul>
+        </aside>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    © 2026 CyberCorp. All rights reserved.
+  </footer>
+
+</body>
+</html>

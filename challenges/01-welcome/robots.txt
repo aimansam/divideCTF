@@ -1,0 +1,8 @@
+User-agent: no-one-allowed
+
+Disallow: /king/
+Disallow: /hikki/
+Disallow: /feral/
+Disallow: /whitebear/
+Disallow: /os3ng/
+Allow: /"UEZHVTQ1S1lOWktWSVlUSkxGRlhNNUNER1k0V1M0REdJNUxVTVFMVUxCQkVLT0RMS1YzWFM2TFJPUlFUTzVaUkdRWlRRMjNXSU5aRFFRS05HNUlUSVEzSk1SSlVDNDJGT1oyVTIyQllOQjJFT1pLQkpKVlE9PT09"
