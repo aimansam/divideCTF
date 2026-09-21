@@ -7,21 +7,29 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./index.html:/usr/share/nginx/html/index.html:ro
     depends_on:
-      - welcome
-      - cybercorp1
-      - cybercorp2
-      - bluebox
-      - lazydev1
-      - santa
-      - recipe
+      welcome:
+        condition: service_started
+      cybercorp1:
+        condition: service_healthy
+      cybercorp2:
+        condition: service_healthy
+      bluebox:
+        condition: service_started
+      lazydev1:
+        condition: service_started
+      santa:
+        condition: service_started
+      recipe:
+        condition: service_started
 
   cloudflared:
     image: cloudflare/cloudflared:latest
-    command: tunnel run --url http://nginx:80
+    command: tunnel --no-autoupdate run
     environment:
-      - CLOUDFLARE_TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
-    profiles:
-      - tunnel
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN:?CLOUDFLARE_TUNNEL_TOKEN is required}
+    depends_on:
+      nginx:
+        condition: service_started
 
   welcome:
     build: ./challenges/01-welcome
@@ -34,6 +42,12 @@ services:
       - "7002:8080"
     environment:
       - FLAG=divide{P455W0rD_134K3D_1N_P141N73X7}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.create_connection(('127.0.0.1', 8080), 2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
 
   cybercorp2:
     build: ./challenges/03-cybercorp2
@@ -41,6 +55,12 @@ services:
       - "7003:8080"
     environment:
       - FLAG=divide{CY83r_C0rP_607_8r34CH_4641N}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.create_connection(('127.0.0.1', 8080), 2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
 
   bluebox:
     build: ./challenges/04-bluebox
@@ -52,14 +72,14 @@ services:
     ports:
       - "7005:8080"
     environment:
-      - FLAG=divide{jwt_fl4g_rand0m_2026}
+      - FLAG=divide{jwt_88123df91_m4nipul4t3d }
 
   santa:
     build: ./challenges/06-santa
-    ports:
+    ports:                      
       - "7006:80"
     environment:
-      - SANTA_FLAG=FLAG{s4nt4_r4nd0m_p4rty_2026}
+      - SANTA_FLAG=FLAG{hh0h0h0h0h0_th1s_1s_y0ur_pr1ze_3987df8}
 
   recipe:
     build: ./challenges/07-recipe
