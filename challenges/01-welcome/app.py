@@ -12,18 +12,18 @@ def home():
     res.set_cookie('part2', 'UEFSVCAyOiBEVjNON1VyM19GVQ==')
     return res
 
-@app.route('/secret1')
+@app.route('/secret1', strict_slashes=False)
 def secret1():
     return render_template('secret1.html')
 
-@app.route('/secret2')
+@app.route('/secret2', strict_slashes=False)
 def secret2():
     content = render_template('secret2.html')
     res = make_response(content)
     res.headers['This-Is-Flag-Part3'] = 'UEFSVCAzOiAxMV8wRl9IMURE'
     return res
 
-@app.route('/secret3')
+@app.route('/secret3', strict_slashes=False)
 def secret3():
     return render_template('secret3.html')
 
@@ -32,7 +32,7 @@ def robots():
     # Serves robots.txt from the root directory
     return send_from_directory(app.root_path, 'robots.txt')
 
-@app.route('/lock')
+@app.route('/lock', strict_slashes=False)
 def lock():
     # Serves robots.txt from the root directory
     return render_template('lock.html')
