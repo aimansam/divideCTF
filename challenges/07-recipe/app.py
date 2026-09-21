@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, jsonify, abort
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/07-recipe/static')
 
 RECIPES = {
     1:  {"title": "Spicy Garlic Noodles", "desc": "Quick wok-tossed noodles with garlic and chili.",
@@ -74,7 +74,7 @@ def index():
             "day": d,
             "title": RECIPES[d]["title"],
             "desc": RECIPES[d]["desc"],
-            "img": f"/static/img/{d}.jpg",
+            "img": f"/07-recipe/static/img/{d}.jpg",
         })
     return render_template("index.html", days=days)
 

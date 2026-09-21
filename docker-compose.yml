@@ -42,6 +42,7 @@ services:
       - "7002:8080"
     environment:
       - FLAG=divide{P455W0rD_134K3D_1N_P141N73X7}
+      - BASE_PATH=/02-cybercorp1
     healthcheck:
       test: ["CMD", "python", "-c", "import socket; socket.create_connection(('127.0.0.1', 8080), 2)"]
       interval: 5s
@@ -55,6 +56,7 @@ services:
       - "7003:8080"
     environment:
       - FLAG=divide{CY83r_C0rP_607_8r34CH_4641N}
+      - BASE_PATH=/03-cybercorp2
     healthcheck:
       test: ["CMD", "python", "-c", "import socket; socket.create_connection(('127.0.0.1', 8080), 2)"]
       interval: 5s

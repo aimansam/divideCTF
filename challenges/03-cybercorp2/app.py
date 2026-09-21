@@ -5,8 +5,13 @@ import os
 
 app = Flask(__name__)
 port = os.getenv('PORT', 8080)  # Use PORT env variable if set, otherwise default to 8080
+BASE_PATH = os.getenv('BASE_PATH', '').rstrip('/')
 app.secret_key = os.urandom(16)  # Needed for session management
 DATABASE = 'cybercorp2.db'
+
+@app.context_processor
+def inject_base_path():
+    return {'base_path': BASE_PATH}
 
 # --- Database Helper Functions ---
 def get_db_connection():
@@ -69,7 +74,7 @@ def login():
             if user:
                 session['logged_in'] = True
                 session['username'] = user[1]
-                return redirect('/admin')
+                return redirect(f'{BASE_PATH}/admin')
             else:
                 error = 'Invalid username or password'
                 return render_template('login.html', error=error)
@@ -83,7 +88,7 @@ def login():
 @app.route('/admin')
 def admin():
     if not session.get('logged_in'):
-        return redirect('/')
+        return redirect(f'{BASE_PATH}/')
         
     get_username_param = request.args.get('username', '').strip()
     get_role_param = request.args.get('role', '').strip()
@@ -128,7 +133,7 @@ def admin():
 def logout():
     session.pop('logged_in', None)
     session.pop('username', None)
-    return redirect('/')
+    return redirect(f'{BASE_PATH}/')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=port)

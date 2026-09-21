@@ -16,7 +16,7 @@
         <h2>Find the hidden flag!</h2>
         <p>Flag format: <span style="color: red;">divide{fakeflag}</span></p>
         <!-- PART 1: divide{4N_4 -->
-        <a href="/secret1" class="startButton">START</a>
+        <a href="{{ url_for('secret1') }}" class="startButton">START</a>
         <a href="/lock" class="startButton">START</a>
         <a href="/lock" class="startButton">START</a>
         <a href="/lock" class="startButton">START</a>
@@ -24,10 +24,10 @@
         <a href="/lock" class="startButton">START</a>
         <a href="/lock" class="startButton">START</a>
         <a href="/lock" class="startButton">START</a>
-        <a href="/secret2" class="startButton">START</a>
+        <a href="{{ url_for('secret2') }}" class="startButton">START</a>
         <a href="/lock" class="startButton">START</a>
         <a href="/lock" class="startButton">START</a>
-        <a href="/secret3" class="startButton">START</a>
+        <a href="{{ url_for('secret3') }}" class="startButton">START</a>
         <a href="/lock" class="startButton">START</a>
 
     </div>

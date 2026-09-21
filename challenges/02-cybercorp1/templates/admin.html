@@ -268,7 +268,7 @@
   <div class="topbar">
     <div class="container">
       <nav class="nav" aria-label="Primary">
-        <a class="brand" href="/" aria-label="CyberCorp home">
+        <a class="brand" href="{{ base_path }}/" aria-label="CyberCorp home">
           <!-- Option B logo -->
           <svg width="40" height="40" viewBox="0 0 64 64" aria-hidden="true" class="logo-svg">
             <defs>
@@ -294,8 +294,8 @@
         </div>
 
         <div class="navcta">
-          <a class="btn" href="/" title="Back to site">Public Site</a>
-          <a class="btn primary" href="/logout" title="Sign out">Logout</a>
+          <a class="btn" href="{{ base_path }}/" title="Back to site">Public Site</a>
+          <a class="btn primary" href="{{ base_path }}/logout" title="Sign out">Logout</a>
         </div>
       </nav>
     </div>
@@ -362,7 +362,7 @@
               <small>Query SQLite</small>
             </div>
 
-            <form method="GET" action="/admin" class="search" aria-label="Admin search">
+            <form method="GET" action="{{ base_path }}/admin" class="search" aria-label="Admin search">
               <div class="input">
                 <label class="muted" for="username">Search</label>
                 <input id="username" name="username" type="text" value="{{ request.args.get('username','') }}" placeholder="username" />
@@ -391,7 +391,7 @@
 
               <div class="actions">
                 <button class="btn primary" type="submit">Apply</button>
-                <a class="btn" href="/admin">Reset</a>
+                <a class="btn" href="{{ base_path }}/admin">Reset</a>
               </div>
             </form>
 

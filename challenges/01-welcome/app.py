@@ -1,7 +1,7 @@
 from flask import Flask, render_template, send_from_directory, make_response
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/01-welcome/static')
 port = int(os.environ.get("PORT", 8080))
 
 @app.route('/')

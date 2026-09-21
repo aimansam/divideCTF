@@ -131,7 +131,7 @@
 <?php if (!$hide_layout): ?>
 <nav>
     <a href="index.php" class="logo-link">
-        <img src="https://cdn-icons-png.freepik.com/512/6239/6239720.png" width="50" alt="Santa Hat">
+        <img src="https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&amp;fit=crop&amp;w=160&amp;h=160&amp;q=85" width="50" height="50" alt="Santa Hat" loading="eager" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&amp;fit=crop&amp;w=160&amp;h=160&amp;q=85';">
         <h1 class="logo-text">Santa HQ</h1>
     </a>
     <div class="nav-links">
@@ -149,7 +149,7 @@
         } else {
             // Default Fun Hero Section
             echo '
-            <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding: 50px; background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url(\'https://images.unsplash.com/photo-1545629177-3e4b7b25832a?q=80&w=1920\'); background-size:cover; border-radius: 30px; margin: 20px;">
+            <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding: 50px; background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url(\'https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&amp;fit=crop&amp;w=1920&amp;q=85\'); background-size:cover; border-radius: 30px; margin: 20px;">
                 <h1 style="font-family:\'Mountains of Christmas\'; font-size:4.5rem; color:var(--santa-red); margin:0; line-height: 1.2; text-shadow: 3px 3px 0px white;">Sparkle, Joy & <br>Magic Everywhere! ✨</h1>
                 
                 <p style="font-size:1.4rem; color:var(--deep-blue); max-width:600px; margin: 20px auto;">

@@ -167,7 +167,7 @@
         <div style="font-size: 3rem; position: absolute; bottom: -20px; left: -20px; transform: rotate(-15deg);">❄️</div>
 
         <div class="polaroid-frame">
-            <img id="reaction" src="https://static.wikia.nocookie.net/christmas-wiki/images/2/21/How-old-is-santa-6500cdaec0818.jpg/revision/latest?cb=20240708135338" alt="Santa">
+            <img id="reaction" src="https://images.unsplash.com/photo-1576919228236-a097c32a5cd4?auto=format&amp;fit=crop&amp;w=900&amp;q=85" alt="Santa" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&amp;fit=crop&amp;w=900&amp;q=85';">
         </div>
         
         <h1 class="game-title">Guess the Code!</h1>
@@ -233,12 +233,12 @@
                     display.innerText = "Verified: " + data.code;
                 }
                 
-                reaction.src = "https://lanzaroteinformation.co.uk/wp-content/uploads/2018/07/Santa.preview.jpg";
+                reaction.src = "https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&w=900&q=85";
             } else {
                 message.innerText = data.message;
                 message.className = "lose-text";
                 display.innerText = data.hint;
-                reaction.src = "https://www.nationaldaycalendar.com/.image/ar_16:9%2Cc_fill%2Ccs_srgb%2Cg_faces:center%2Cq_auto:eco%2Cw_768/MjAyNTY2MjA1NDYwOTgwODA0/website-feature---santas-list-day--december-4.png";
+                reaction.src = "https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&w=900&q=85";
             }
         })
         .catch(err => {
