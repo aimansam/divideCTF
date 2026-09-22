@@ -167,7 +167,7 @@
         <div style="font-size: 3rem; position: absolute; bottom: -20px; left: -20px; transform: rotate(-15deg);">❄️</div>
 
         <div class="polaroid-frame">
-            <img id="reaction" src="https://images.unsplash.com/photo-1576919228236-a097c32a5cd4?auto=format&amp;fit=crop&amp;w=900&amp;q=85" alt="Santa" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&amp;fit=crop&amp;w=900&amp;q=85';">
+            <img id="reaction" src="https://images.unsplash.com/photo-1640083652354-5b2664e5dfae?auto=format&amp;fit=crop&amp;w=900&amp;q=85" alt="Santa hat" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1638112110884-8aff837033e5?auto=format&amp;fit=crop&amp;w=900&amp;q=85';">
         </div>
         
         <h1 class="game-title">Guess the Code!</h1>
@@ -233,12 +233,12 @@
                     display.innerText = "Verified: " + data.code;
                 }
                 
-                reaction.src = "https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&w=900&q=85";
+                reaction.src = "https://images.unsplash.com/photo-1641040264491-04875c91d292?auto=format&fit=crop&w=900&q=85";
             } else {
                 message.innerText = data.message;
                 message.className = "lose-text";
                 display.innerText = data.hint;
-                reaction.src = "https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&w=900&q=85";
+                reaction.src = "https://images.unsplash.com/photo-1638112110884-8aff837033e5?auto=format&fit=crop&w=900&q=85";
             }
         })
         .catch(err => {

@@ -2,6 +2,11 @@ from flask import Flask, render_template, send_from_directory, make_response
 import os
 
 app = Flask(__name__, static_url_path='/01-welcome/static')
+BASE_PATH = os.getenv('BASE_PATH', '').rstrip('/')
+
+@app.context_processor
+def inject_base_path():
+    return {'base_path': BASE_PATH}
 port = int(os.environ.get("PORT", 8080))
 
 @app.route('/')

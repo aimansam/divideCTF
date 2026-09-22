@@ -6,7 +6,12 @@ import os
 app = Flask(__name__)
 SECRET_KEY = os.getenv('JWT_SECRET', 'divide{jWT_s3cr3t_k3y_2026}')  # Fixed for Docker/gunicorn consistency
 port = int(os.environ.get('PORT', 8080))
+BASE_PATH = os.getenv('BASE_PATH', '').rstrip('/')
 flag = os.getenv('FLAG', 'divide{jwt_fl4g_rand0m_2026}')
+
+@app.context_processor
+def inject_base_path():
+    return {'base_path': BASE_PATH}
 
 BASE_TEMPLATE = """
 <!DOCTYPE html>
@@ -37,7 +42,7 @@ BASE_TEMPLATE = """
     <script>
         async function getToken() {
             try {
-                const res = await fetch('/login');
+                const res = await fetch('{{ base_path }}/login');
                 const data = await res.json();
                 if (data.token) {
                     document.getElementById('output').innerText = "Token Received: " + data.token;
@@ -51,7 +56,7 @@ BASE_TEMPLATE = """
         }
         async function submitToken() {
             const token = document.getElementById('jwt-input').value;
-            const res = await fetch('/verify', {
+            const res = await fetch('{{ base_path }}/verify', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ token: token })

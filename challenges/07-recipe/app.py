@@ -74,7 +74,7 @@ def index():
             "day": d,
             "title": RECIPES[d]["title"],
             "desc": RECIPES[d]["desc"],
-            "img": f"/07-recipe/static/img/{d}.jpg",
+            "img": f"/07-recipe/static/img/{d}.jpg?v=2",
         })
     return render_template("index.html", days=days)
 

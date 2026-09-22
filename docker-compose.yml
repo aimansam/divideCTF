@@ -35,6 +35,8 @@ services:
     build: ./challenges/01-welcome
     ports:
       - "7001:8080"
+    environment:
+      - BASE_PATH=/01-welcome
 
   cybercorp1:
     build: ./challenges/02-cybercorp1
@@ -74,7 +76,8 @@ services:
     ports:
       - "7005:8080"
     environment:
-      - FLAG=divide{jwt_88123df91_m4nipul4t3d }
+      - FLAG=divide{jwt_88123df91_m4nipul4t3d}
+      - BASE_PATH=/05-lazydev1
 
   santa:
     build: ./challenges/06-santa
